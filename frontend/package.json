@@ -1,0 +1,66 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build-render": "vite build --outDir dist-render",
+    "dist": "npm run build-render && electron-builder",
+    "electron": "wait-on http://localhost:5173 && electron . --no-sandbox",
+    "start": "concurrently \"npm run dev\" \"npm run electron\"",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "tailwind:init": "tailwindcss init -p"
+  },
+  "dependencies": {
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "build": {
+    "appId": "com.falconvision.app",
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+    "electron/**/*",
+    "dist-render/**/*",
+
+      "public/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend/build/app.exe",
+        "to": "backend.exe"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@tailwindcss/postcss": "^4.1.3",
+    "@types/node": "^22.15.18",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.4.1",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.1.2",
+    "electron": "^35.1.4",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.3",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.3.5",
+    "wait-on": "^8.0.3"
+  }
+}
