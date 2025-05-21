@@ -61,4 +61,4 @@ This creates `.AppImage`, `.exe` and other binaries under `frontend/dist`.
 
 ## License
 
-MIT License. Built with ❤️ by [Frans Dressler](https://github.com/FransDressler).
+MIT License. Built with ❤️ by [Ruchit Kumar Patel](https://github.com/RuchitKumarPatel) and [Frans Dressler](https://github.com/FransDressler) @ [FalconVision](https://falconvision.org/).
