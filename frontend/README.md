@@ -1,54 +1,69 @@
-# React + TypeScript + Vite
+# FalconVision Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This directory contains the frontend of the **FalconVision** application, a cross-platform video analysis tool that detects humans in drone footage using computer vision models. The frontend is built with **React**, **TypeScript**, and **Electron**, making it capable of running as both a web app and a desktop application.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🎥 Upload video files and perform real-time detection streaming.
+- 📊 View detection results with bounding boxes, timestamps, and class probabilities.
+- 📍 Annotate each detection frame with a custom location field.
+- 🌐 Multilingual support (German 🇩🇪 and English 🇬🇧).
+- 📁 Model selection: switch between different pre-trained YOLO models.
+- 📄 Export detections as a PDF report (including bounding box data and images).
+- 🖥️ Cross-platform Electron app support.
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) for fast development and builds
+- [TailwindCSS](https://tailwindcss.com/) for styling
+- [Electron](https://www.electronjs.org/) for desktop integration
+- [jsPDF](https://github.com/parallax/jsPDF) and [autoTable](https://github.com/simonbengtsson/jsPDF-AutoTable) for PDF export
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Setup (Development)
+
+```bash
+cd frontend
+npm install
+npm run start  # Starts Vite dev server + Electron
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+To only run the Vite dev server:
+```bash
+npm run dev
 ```
+
+## Production Build
+
+To build the production-ready Electron application:
+```bash
+npm run dist
+```
+This will generate a `.AppImage` (Linux), `.exe` (Windows), or other binaries depending on your OS.
+
+## File Structure
+
+```
+frontend/
+├── public/               # Static files (e.g. icon.png)
+├── src/
+│   ├── pages/            # Main views: VideoAnalysis, Settings
+│   ├── context/          # React context for model state
+│   ├── assets/           # Local image imports
+│   ├── electron/         # Electron main process & preload
+│   └── App.tsx           # Application root
+├── dist-render/          # Vite production output
+├── package.json          # NPM scripts and dependencies
+├── vite.config.ts        # Vite configuration
+└── electron-builder.json # Electron Builder config
+```
+
+## Notes
+
+- All detection data is fetched from the local Flask API (default `http://localhost:5000`).
+- The application expects detection model weights and paths to be specified via the UI or config.
+- Backend must be running separately if not bundled.
+
+---
+
+For overall project context, see the [main README](../README.md).
