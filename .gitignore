@@ -1,15 +1,18 @@
 # Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-*.log
+./backend/__pycache__/
+./backend/*.py[cod]
+./backend/*.egg-info/
+./backend/.venv/
+./backend/*.log
+./backend/dist
+./backend/build
+./backend/venv
 
 # Node
-node_modules/
-dist/
-dist-render/
-public/
+./fronend/node_modules/
+./fronend/dist/
+./fronend/dist-render/
+./fronend/public/
 
 # Builds
 *.exe
@@ -20,7 +23,6 @@ backend/build/
 
 # Data
 uploads/
-*.pt
 
 # System
 .DS_Store
