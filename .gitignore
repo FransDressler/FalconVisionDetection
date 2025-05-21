@@ -9,10 +9,10 @@
 ./backend/venv
 
 # Node
-./fronend/node_modules/
-./fronend/dist/
-./fronend/dist-render/
-./fronend/public/
+./frontend/node_modules/
+./frontend/dist/
+./frontend/dist-render/
+./frontend/public/
 
 # Builds
 *.exe
