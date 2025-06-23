@@ -24,13 +24,13 @@ function Settings({ language, setLanguage }: Props) {
     }
   };
 
-  // 👇 Electron Dialog für Weights auswählen
   const selectFile = async () => {
     const path = await (window as any).electronAPI?.selectWeights();
     if (path) {
       setNewModel({ ...newModel, path });
     }
   };
+  
 
   return (
     <div className="p-6 max-w-3xl mx-auto">

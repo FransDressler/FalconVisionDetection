@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "FalconVisionDetection",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0-beta",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
@@ -23,6 +23,7 @@
     "react-router-dom": "^7.6.0"
   },
   "build": {
+    "productName": "FalconVision",
     "appId": "com.falconvision.app",
     "win": {
       "target": "nsis"

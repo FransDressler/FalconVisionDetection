@@ -26,18 +26,21 @@ def detect_stream():
         os.remove(f)
 
     model_key = request.args.get("model", "model1")
-    custom_path = request.args.get("path")  # <-- neues Argument aus Frontend
-
-    # Entscheide, welchen Pfad das Modell hat
-    if model_key in MODEL_MAP:
-        model_path = MODEL_MAP[model_key]
-    elif custom_path:
+    custom_path = request.args.get("path")
+    if custom_path:
         model_path = custom_path
+    elif model_key in MODEL_MAP:
+        model_path = MODEL_MAP[model_key]
     else:
         return Response(json.dumps({"error": "Kein Modellpfad gefunden."}), mimetype="application/json")
 
+
     print(f"Lade Modell: {model_path}")
-    model = YOLO(model_path)
+    try:
+        model = YOLO(model_path)
+    except Exception as e:
+        return Response(json.dumps({"error": f"Modell konnte nicht geladen werden: {str(e)}"}), mimetype="application/json")
+
 
     # Video-Upload und Parameter
     file = request.files['video']
