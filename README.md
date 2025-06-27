@@ -42,8 +42,6 @@ FalconVision/
 ├── backend/       # Flask + YOLOv11 inference server
 ├── frontend/      # Electron + React video analysis interface
 ├── uploads/       # Temporary folder for uploaded video frames
-├── start.sh       # Linux launcher script
-├── start_windows.bat  # Windows launcher script
 ```
 
 ## Build the Electron App
