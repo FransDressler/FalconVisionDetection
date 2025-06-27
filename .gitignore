@@ -7,6 +7,7 @@
 ./backend/dist
 ./backend/build
 ./backend/venv
+./backend/.venv
 
 # Node
 ./frontend/node_modules/
