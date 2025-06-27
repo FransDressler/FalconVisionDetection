@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+const { spawn }                      = require('child_process');
+const path                           = require('path');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -9,59 +8,49 @@ function createWindow() {
     height: 800,
     webPreferences: {
       contextIsolation: true,
-      nodeIntegration: false,
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration:  false,
+      preload:          path.join(__dirname, 'preload.js'),
     }
   });
-
   win.loadFile(path.join(__dirname, '..', 'dist-render', 'index.html'));
-  // win.webContents.openDevTools(); // optional for debugging
 }
 
 app.whenReady().then(() => {
-  // Start backend
-  const backendPath = path.join(__dirname, '..', 'backend', 'build', 'app.exe');
+  // 1) compute where your backend script really lives after packaging:
+  const backendScript = path.join(
+    process.resourcesPath,
+    'app.asar.unpacked',  // <--- note, unpacked
+    'backend',
+    'app.py'
+  );
+
+  // 2) spawn python3 with that script
   try {
-    const backend = spawn(backendPath, {
+    console.log('▶️  Spawning backend:', backendScript);
+    const pythonExe = 'python3'; // or an absolute path if you bundle one
+    const backend = spawn(pythonExe, [backendScript], {
       detached: true,
-      stdio: 'ignore',
-      shell: true
+      stdio:   'ignore',
+      shell:   false
     });
     backend.unref();
-    console.log("✅ Backend gestartet");
+    console.log('✅ Backend started');
   } catch (err) {
     console.error('❌ Backend start failed:', err);
   }
 
-  // IPC handler for weight file selection
+  // 3) register your IPC handler for weight selection
   ipcMain.handle('dialog:openWeights', async () => {
-    const result = await dialog.showOpenDialog({
+    const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile'],
-      filters: [{ name: 'YOLO Weights', extensions: ['pt'] }]
+      filters:    [{ name: 'YOLO Weights', extensions: ['pt'] }]
     });
-
-    if (!result.canceled && result.filePaths.length > 0) {
-      const selectedPath = result.filePaths[0];
-      const fileName = path.basename(selectedPath);
-      const targetDir = path.join(__dirname, '../../', 'falcon-vision-models');
-      const targetPath = path.join(targetDir, fileName);
-
-      try {
-        fs.mkdirSync(targetDir, { recursive: true });
-        fs.copyFileSync(selectedPath, targetPath);
-        console.log("✅ Copied model to:", targetPath);
-        return targetPath;
-      } catch (err) {
-        console.error("❌ Failed to copy weights file:", err);
-        return null;
-      }
-    }
-
-    return null;
+    return (!canceled && filePaths[0]) || null;
   });
 
+  // 4) finally launch the UI
   createWindow();
-  console.log("✅ Electron Main gestartet");
+  console.log('✅ Electron Main started');
 });
 
 app.on('window-all-closed', () => {

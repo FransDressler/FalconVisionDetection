@@ -1,7 +1,7 @@
 {
   "name": "FalconVisionDetection",
   "private": true,
-  "version": "0.1.0-beta",
+  "version": "0.2.0-beta",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
@@ -23,7 +23,13 @@
     "react-router-dom": "^7.6.0"
   },
   "build": {
+    "asar": true,
+    "compression": "maximum",
     "productName": "FalconVision",
+
+    "asarUnpack": [
+      "backend/**"   
+    ],
     "appId": "com.falconvision.app",
     "win": {
       "target": "nsis"
@@ -37,8 +43,8 @@
     ],
     "extraResources": [
       {
-        "from": "../backend/build/app.exe",
-        "to": "backend.exe"
+        "from": "../backend/",
+        "to": "backend"
       }
     ]
   },

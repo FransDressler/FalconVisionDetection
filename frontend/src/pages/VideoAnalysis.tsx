@@ -50,16 +50,16 @@ function VideoAnalysis({ language }: Props) {
     setDetections([]);
     setProgress(0);
     ortMapRef.current = {};
-
+  
     const formData = new FormData();
     formData.append('video', file);
-
+  
     try {
       let url = `http://localhost:5000/detect_stream?skip=${skipValue}&model=${selectedModel}`;
       if (selectedModelObject?.path) {
         url += `&path=${encodeURIComponent(selectedModelObject.path)}`;
       }
-
+  
       const res = await fetch(url, {
         method: 'POST',
         body: formData,
@@ -67,16 +67,33 @@ function VideoAnalysis({ language }: Props) {
       const reader = res.body?.getReader();
       const decoder = new TextDecoder("utf-8");
       if (!reader) return;
-
+  
       let done = false;
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunk = decoder.decode(value, { stream: !done });
+  
         chunk.split("\n").forEach((line) => {
           if (!line.trim()) return;
-          const data: FrameUpdate = JSON.parse(line);
-          if (data.status === 'done') {
+  
+          // 1) safe-parse JSON
+          let data: FrameUpdate & { error?: string };
+          try {
+            data = JSON.parse(line);
+          } catch (e) {
+            console.error("❌ Could not parse line:", line);
+            return;
+          }
+  
+          // 2) handle backend‐reported errors
+          if ("error" in data) {
+            console.error("🚨 Server error:", data.error);
+            return;
+          }
+  
+          // 3) your existing logic
+          if (data.status === "done") {
             setProgress(100);
             return;
           }
@@ -92,7 +109,7 @@ function VideoAnalysis({ language }: Props) {
       console.error("❌ Upload/Streaming Error:", error);
     }
   };
-
+  
   const downloadPDF = async () => {
     const doc = new jsPDF();
 

@@ -21,7 +21,7 @@ function App() {
               alt="FalconVision Logo"
               className="h-10 w-10 drop-shadow-lg"
             />
-            <span className="text-2xl font-bold text-sky-800 tracking-wide">FalconVision 0.1</span>
+            <span className="text-2xl font-bold text-sky-800 tracking-wide">FalconVision</span>
           </div>
 
           <div className="flex items-center gap-6">
