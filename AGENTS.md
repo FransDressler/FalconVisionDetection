@@ -91,8 +91,8 @@ Ends with:
 ## 🚀 Build Targets
 
 - `npm run dist`: Generates AppImage for Linux and optionally `.exe` for Windows
+- Artifacts are placed in `frontend/dist/`
 
-
-
+---
 
 For support or extension of capabilities, contact the FalconVision maintainers.
